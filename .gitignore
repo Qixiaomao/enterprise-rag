@@ -1,0 +1,98 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+build/
+dist/
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Environment / Secrets
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+
+# =========================
+# Project data
+# =========================
+data/raw/
+data/vector_db/
+data/uploads/
+data/processed/
+
+# Keep directory structure if needed
+!data/.gitkeep
+!data/raw/.gitkeep
+!data/vector_db/.gitkeep
+
+# =========================
+# Local model / cache
+# =========================
+Models/
+Cache/
+cache/
+hf_cache/
+huggingface_cache/
+
+# Hugging Face / Transformers / Torch cache
+.huggingface/
+.cache/
+**/.cache/
+torch_cache/
+
+# Chroma / local vector stores
+chroma/
+chromadb/
+*.sqlite3
+
+# =========================
+# Jupyter
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# Testing / coverage
+# =========================
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# =========================
+# Temporary files
+# =========================
+*.tmp
+*.temp
+*.bak
