@@ -10,12 +10,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data" / "raw"
 VECTOR_DB_DIR = str(BASE_DIR / "data" / "vector_db")
 
+
+# 加载文档
 def load_documents():
     documents = []
+    
     for pdf_file in DATA_DIR.glob("*.pdf"):
         print(f"Loading PDF: {pdf_file}")
         loader = PyPDFLoader(str(pdf_file))
         docs = loader.load()
+        
+        # 为每个文档添加来源信息
+        for doc in docs:
+            doc.metadata["source_file"] = pdf_file.name
+            
         print(f"  Pages loaded: {len(docs)}")
         documents.extend(docs)
     return documents
