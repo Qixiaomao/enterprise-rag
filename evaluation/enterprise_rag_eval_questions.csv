@@ -1,0 +1,11 @@
+qid,question,expected_topic,expected_document,expected_keywords
+1,Bank Conflict 是什么？,CUDA,CUDA算子优化及GPU显存架构学习笔记.pdf,"Bank Conflict,存储体冲突,Shared Memory"
+2,CUDA 里共享内存有什么作用？,CUDA,CUDA算子优化及GPU显存架构学习笔记.pdf,"Shared Memory,共享和缓存,SM"
+3,怎样减少显存访问带来的性能问题？,CUDA,CUDA算子优化及GPU显存架构学习笔记.pdf,"Coalesced Memory Access,Shared Memory,Tiling"
+4,Global Memory 的优化重点是什么？,CUDA,CUDA算子优化及GPU显存架构学习笔记.pdf,"Coalesced Memory Access,相邻线程,相邻地址"
+5,公司数据分为几个等级？,Policy,企业内部数据安全与研发工具使用管理制度.pdf,"L1,L2,L3,三个等级"
+6,哪些数据属于 L3 机密数据？,Policy,企业内部数据安全与研发工具使用管理制度.pdf,"核心业务源代码,用户隐私数据,财务报表,专利技术"
+7,是否允许把机密代码粘贴到外部 AI 助手？,Policy,企业内部数据安全与研发工具使用管理制度.pdf,"严禁,L3,外部公共AI助手"
+8,这个文档解析与检索服务支持什么能力？,API Doc,轻量级文档解析与检索服务API说明.pdf,"文档解析,检索,API"
+9,RAG 系统为什么需要来源追踪？,RAG,轻量级文档解析与检索服务API说明.pdf,"来源追踪,可解释性,引用"
+10,Hybrid Retrieval 的作用是什么？,RAG,轻量级文档解析与检索服务API说明.pdf,"Dense,BM25,关键词,语义"

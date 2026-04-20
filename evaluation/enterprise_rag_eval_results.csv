@@ -1,0 +1,29 @@
+﻿qid,question,expected_topic,expected_document,expected_keywords,success,latency_sec,top1_source_file,top1_page,top1_score,top1_correct,answer,manual_answer_label,manual_answer_score,notes
+1,Bank Conflict 是什么？,CUDA,CUDA算子优化及GPU显存架构学习笔记.pdf,"Bank Conflict,存储体冲突,Shared Memory",TRUE,4.002,CUDA算子优化及GPU显存架构学习笔记.pdf,0,2,1,Bank Conflict 是 GPU 上的数据访问冲突问题。当多个线程试图同时访问同一个共享内存区域时，由于空间有限而发生的访问冲突现象。这可能会导致数据错误、性能下降甚至硬件损坏。为了避免 Bank Conflict，在设计和实现过程中需要合理规划存储器布局，并通过适当的缓存机制来减少冲突的发生。[1],correct,1,
+2,CUDA 里共享内存有什么作用？,CUDA,CUDA算子优化及GPU显存架构学习笔记.pdf,"Shared Memory,共享和缓存,SM",TRUE,3.352,CUDA算子优化及GPU显存架构学习笔记.pdf,0,2,1,在 CUDA 算子优化及 GPU 显存架构学习笔记中提到，共享内存（Shared Memory）的作用是位于 SM 内部，延迟极低（接近寄存器）。它常用于 Block 内线程块的数据共享和缓存。使用时需高度注意避免存储体冲突（Bank Conflict），以确保数据访问的高效性和一致性。[1],partial,0.5,
+3,怎样减少显存访问带来的性能问题？,CUDA,CUDA算子优化及GPU显存架构学习笔记.pdf,"Coalesced Memory Access,Shared Memory,Tiling",TRUE,3.319,CUDA算子优化及GPU显存架构学习笔记.pdf,0,4,1,在显存访问中减少性能问题的方法是采用合并访问（Coalesced Memory Access）策略。通过让相邻线程访问相邻地址的方式，尽量减少对全局内存的需求，从而降低延迟并提高数据处理效率。同时，应避免存储体冲突（Bank Conflict），以确保数据缓存的合理利用和高性能。[1],partial,0.5,
+4,Global Memory 的优化重点是什么？,CUDA,CUDA算子优化及GPU显存架构学习笔记.pdf,"Coalesced Memory Access,相邻线程,相邻地址",TRUE,2.62,CUDA算子优化及GPU显存架构学习笔记.pdf,0,4,1,Global Memory 的优化重点是实现合并访问（Coalesced Memory Access），尽量让相邻线程访问相邻地址。,correct,1,
+5,公司数据分为几个等级？,Policy,企业内部数据安全与研发工具使用管理制度.pdf,"L1,L2,L3,三个等级",TRUE,3.074,企业内部数据安全与研发工具使用管理制度.pdf,0,3,1,"公司数据分为三个等级：
+
+- 公开数据 (L1)
+- 内部数据 (L2)  
+- 机密数据 (L3)
+
+公司提倡拥抱新技术以提⾼⽣产力，但在安全、可控的前提下使用外部云服务及开源工具。",correct,1,
+6,哪些数据属于 L3 机密数据？,Policy,企业内部数据安全与研发工具使用管理制度.pdf,"核心业务源代码,用户隐私数据,财务报表,专利技术",TRUE,3.377,企业内部数据安全与研发工具使用管理制度.pdf,0,3,1,"根据企业内部数据安全与研发工具使用管理制度的规定，L3 机密数据包括：
+
+1. 核⼼业务源代码
+2. ⽤⼾隐私数据
+3. 财务报表
+4. 未公开的专利技术及底层算法
+
+引用来源编号：
+[1] 来自“企业内部数据安全与研发工具使用管理制度”文档。",correct,1,
+7,是否允许把机密代码粘贴到外部 AI 助手？,Policy,企业内部数据安全与研发工具使用管理制度.pdf,"严禁,L3,外部公共AI助手",TRUE,2.942,企业内部数据安全与研发工具使用管理制度.pdf,0,6,1,严禁将机密数据（如核⼼代码）粘贴⾄外部公共  AI 助⼿或未经安全审计的云端 RAG 系统中。,correct,1,
+8,这个文档解析与检索服务支持什么能力？,API Doc,轻量级文档解析与检索服务API说明.pdf,"文档解析,检索,API",TRUE,3.242,轻量级文档解析与检索服务API说明.pdf,0,2,1,"这个文档解析与检索服务支持以下能力：
+
+- 对接多种格式的⽂档进行结构化解析和分块。
+- 生成向量化数据存入 Vector DB（MILVUS / Qdrant）。
+- 利用 Embedding 模型处理多语⾔及⻓⽂本。",partial,0.5,
+9,RAG 系统为什么需要来源追踪？,RAG,轻量级文档解析与检索服务API说明.pdf,"来源追踪,可解释性,引用",TRUE,3.538,企业内部数据安全与研发工具使用管理制度.pdf,0,2,0,RAG 系统需要来源追踪的原因是确保数据安全。通过来源追踪机制，可以防止将 L3 级别机密数据（如核心代码、数据库密钥、用户真实信息）粘贴到外部公共 AI 助手或未经安全审计的云端 RAG 系统中。这样可以有效保护敏感信息不被泄露，维护企业内部数据的安全与合规性。[1],partial,0.5,
+10,Hybrid Retrieval 的作用是什么？,RAG,轻量级文档解析与检索服务API说明.pdf,"Dense,BM25,关键词,语义",TRUE,3.723,轻量级文档解析与检索服务API说明.pdf,0,0,1,Hybrid Retrieval 的作用是通过结合检索和解析来提高查询的精确度和召回率。具体来说，在全文搜索中，使用混合检索（如 BGE-M3 模型）与结构化文档解析相结合的方法，可以更好地匹配查询词、关键词及其上下文信息，从而实现更准确和全面的搜索结果。这在需要高精度匹配查询到相关文档的地方尤其有效，比如法律文档、学术文献等场景中，能够显著提升检索效果。[1],partial,0.5,
