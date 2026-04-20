@@ -20,7 +20,12 @@ db = Chroma(
     embedding_function=embeddings
 )
 
-
+# 定义中文停用词列表，结合jieba分词结果进行过滤
+STOPWORDS = {
+    "的", "是", "了", "在", "和", "与", "及", "或", "中", "对", "将",
+    "可以", "通过", "一个", "一种", "进行", "需要", "使用", "问题", "什么",
+    "如何", "怎样", " ", "\n", "\t"
+}
 
 
 def get_all_docs():
@@ -86,6 +91,45 @@ def hybrid_retrieve(query, dense_k=2, bm25_k=2):
     return merged
 
 
+
+# 清洗和过滤分词结果，去除停用词和空白字符
+def clean_tokens(tokens):
+    return {
+        token.strip()
+        for token in tokens
+        if token.strip() and token.strip() not in STOPWORDS
+    }
+
+
+
+# 添加reranker函数：提高检索结果的相关性
+def rerank_docs(query, docs, top_n=2):
+    query_tokens = clean_tokens(jieba.cut(query))
+    scored_docs = []
+
+    for doc in docs:
+        if hasattr(doc, "page_content"):
+            text = doc.page_content
+            metadata = doc.metadata
+        else:
+            text = doc["page_content"]
+            metadata = doc["metadata"]
+
+        doc_tokens = clean_tokens(jieba.cut(text))
+        overlap = query_tokens & doc_tokens
+        score = len(overlap)
+
+        scored_docs.append({
+            "page_content": text,
+            "metadata": metadata,
+            "score": score,
+            "overlap_tokens": sorted(list(overlap))
+        })
+
+    scored_docs.sort(key=lambda x: x["score"], reverse=True)
+    return scored_docs[:top_n]
+
+
 def ask_ollama(prompt):
     url = "http://localhost:11434/api/generate"
 
@@ -103,14 +147,9 @@ def build_prompt(query, docs):
     context_parts = []
 
     for i, doc in enumerate(docs, 1):
-        if hasattr(doc, "page_content"):
-            text = doc.page_content
-            source = doc.metadata.get("source_file", "Unknown")
-            page = doc.metadata.get("page", "N/A")
-        else:
-            text = doc["page_content"]
-            source = doc["metadata"].get("source_file", "Unknown")
-            page = doc["metadata"].get("page", "N/A")
+        text = doc["page_content"]
+        source = doc["metadata"].get("source_file", "Unknown")
+        page = doc["metadata"].get("page", "N/A")
 
         context_parts.append(f"[{i}] 来源: {source} | Page: {page}\n{text}")
 
@@ -143,21 +182,22 @@ def build_prompt(query, docs):
 if __name__ == "__main__":
     question = input("请输入问题：")
 
-    docs = hybrid_retrieve(question, dense_k=2, bm25_k=2)
+    # 先进行混合检索，获取候选文档
+    candidates = hybrid_retrieve(question, dense_k=2, bm25_k=2)
+    docs = rerank_docs(question, candidates, top_n=2)
 
-    print("\n参考来源：")
+    print("\n参考来源(Reranked):")
     for i, doc in enumerate(docs, 1):
-        if hasattr(doc, "page_content"):
-            source = doc.metadata.get("source_file", "Unknown")
-            page = doc.metadata.get("page", "N/A")
-            text = doc.page_content
-        else:
-            source = doc["metadata"].get("source_file", "Unknown")
-            page = doc["metadata"].get("page", "N/A")
-            text = doc["page_content"]
+        source = doc["metadata"].get("source_file", "Unknown")
+        page = doc["metadata"].get("page", "N/A")
+        text = doc["page_content"]
+        score = doc.get("score", 0)
+        overlap_tokens = doc.get("overlap_tokens", [])
 
         print(f"\n--- Chunk {i} ---")
         print(f"Source: [{i}] {source} | Page: {page}")
+        print(f"Rerank Score: {score}")
+        print(f"Overlap Tokens: {overlap_tokens}")
         print(text[:300])
 
     prompt = build_prompt(question, docs)
