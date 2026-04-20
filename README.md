@@ -8,7 +8,7 @@ A full-stack enterprise knowledge base QA system built with Next.js + FastAPI + 
 
 ## Demo Screenshot
 
-![demo](./screenshots/home.png)
+![demo](./screenshots/home.jpg)
 
 # Preview
 
