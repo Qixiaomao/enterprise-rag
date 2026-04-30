@@ -46,15 +46,15 @@ logs/
 # =========================
 # Project data
 # =========================
-data/raw/
-data/vector_db/
-data/uploads/
-data/processed/
+backend/data/raw/
+backend/data/vector_db/
+backend/data/uploads/
+backend/data/processed/
 
 # Keep directory structure if needed
-!data/.gitkeep
-!data/raw/.gitkeep
-!data/vector_db/.gitkeep
+!backend/data/.gitkeep
+!backend/data/raw/.gitkeep
+!backend/data/vector_db/.gitkeep
 
 # =========================
 # Local model / cache
@@ -96,3 +96,6 @@ htmlcov/
 *.tmp
 *.temp
 *.bak
+
+# Personal files
+cv_text.txt
