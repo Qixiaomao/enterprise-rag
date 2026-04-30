@@ -129,7 +129,7 @@ def rerank_docs(query, docs, top_n=2):
     scored_docs.sort(key=lambda x: x["score"], reverse=True)
     return scored_docs[:top_n]
 
-
+# 构建提示词并调用 Ollama 获取回答
 def ask_ollama(prompt):
     url = "http://localhost:11434/api/generate"
 
@@ -142,7 +142,7 @@ def ask_ollama(prompt):
     response = requests.post(url, json=payload)
     return response.json()["response"]
 
-
+# 构建提示词函数：根据用户问题和检索到的文档构建一个清晰的提示词，指导 Ollama 生成准确的回答
 def build_prompt(query, docs):
     context_parts = []
 

@@ -15,6 +15,7 @@ VECTOR_DB_DIR = str(BASE_DIR / "data" / "vector_db")
 def load_documents():
     documents = []
     
+    # 遍历数据目录中的所有PDF文件
     for pdf_file in DATA_DIR.glob("*.pdf"):
         print(f"Loading PDF: {pdf_file}")
         loader = PyPDFLoader(str(pdf_file))
@@ -28,7 +29,7 @@ def load_documents():
         documents.extend(docs)
     return documents
 
-
+# 文档分割与过滤
 def split_documents(documents):
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=500,
@@ -40,6 +41,7 @@ def split_documents(documents):
     # 过滤空文本
     valid_chunks = []
     for chunk in chunks:
+        # 去除前后空白字符
         text = chunk.page_content.strip()
         if text:
             chunk.page_content = text
@@ -47,7 +49,7 @@ def split_documents(documents):
 
     return valid_chunks
 
-
+# 构建向量数据库
 def build_vector_db(chunks):
     if not chunks:
         raise ValueError("No valid chunks found. Please check whether the PDF contains extractable text.")
